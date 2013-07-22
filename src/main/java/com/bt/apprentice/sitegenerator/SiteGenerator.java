@@ -19,12 +19,16 @@ public class SiteGenerator {
   }
 
   private static void writeCompiledFile(File file) throws IOException {
-    PegDownProcessor processor = new PegDownProcessor();
-    String compiled = processor.markdownToHtml(readFile(file));
     String path = file.getAbsolutePath();
     String newPath = path.replaceAll(".markdown$", ".html");
     File newFile = new File(newPath);
-    FileUtils.writeStringToFile(newFile, compiled);
+    FileUtils.writeStringToFile(newFile, compile(file));
+  }
+
+  private static String compile(File file) throws IOException {
+    PegDownProcessor processor = new PegDownProcessor();
+    String compiled = processor.markdownToHtml(readFile(file));
+    return compiled;
   }
 
   private static String readFile(File file) throws IOException {
