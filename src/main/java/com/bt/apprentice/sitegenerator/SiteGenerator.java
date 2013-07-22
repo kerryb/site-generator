@@ -19,9 +19,8 @@ public class SiteGenerator {
   }
 
   private static void writeCompiledFile(File file) throws IOException {
-    String content = readFile(file);
     PegDownProcessor processor = new PegDownProcessor();
-    String compiled = processor.markdownToHtml(content);
+    String compiled = processor.markdownToHtml(readFile(file));
     String path = file.getAbsolutePath();
     String newPath = path.replaceAll(".markdown$", ".html");
     File newFile = new File(newPath);
