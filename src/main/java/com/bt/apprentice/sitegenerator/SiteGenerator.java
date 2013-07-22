@@ -19,10 +19,14 @@ public class SiteGenerator {
   }
 
   private static void writeCompiledFile(File file) throws IOException {
+    File newFile = new File(newPath(file));
+    FileUtils.writeStringToFile(newFile, compile(file));
+  }
+
+  private static String newPath(File file) {
     String path = file.getAbsolutePath();
     String newPath = path.replaceAll(".markdown$", ".html");
-    File newFile = new File(newPath);
-    FileUtils.writeStringToFile(newFile, compile(file));
+    return newPath;
   }
 
   private static String compile(File file) throws IOException {
