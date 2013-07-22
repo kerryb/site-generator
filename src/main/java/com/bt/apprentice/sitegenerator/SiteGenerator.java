@@ -10,7 +10,7 @@ public class SiteGenerator {
   public static void main(String[] args) throws IOException {
     File[] files = listFiles();
     for (File file : files) {
-      writeCompiledFile(file);
+      new Page(file).writeCompiledFile();
     }
   }
 
@@ -18,24 +18,32 @@ public class SiteGenerator {
     return new File("site").listFiles();
   }
 
-  private static void writeCompiledFile(File file) throws IOException {
-    File newFile = new File(newPath(file));
-    FileUtils.writeStringToFile(newFile, compile(file));
-  }
+  static class Page {
+    private File file;
 
-  private static String newPath(File file) {
-    String path = file.getAbsolutePath();
-    String newPath = path.replaceAll(".markdown$", ".html");
-    return newPath;
-  }
+    public Page(File file) {
+      this.file = file;
+    }
+    
+    private void writeCompiledFile() throws IOException {
+      File newFile = new File(newPath());
+      FileUtils.writeStringToFile(newFile, compile());
+    }
 
-  private static String compile(File file) throws IOException {
-    PegDownProcessor processor = new PegDownProcessor();
-    String compiled = processor.markdownToHtml(readFile(file));
-    return compiled;
-  }
+    private String newPath() {
+      String path = file.getAbsolutePath();
+      String newPath = path.replaceAll(".markdown$", ".html");
+      return newPath;
+    }
 
-  private static String readFile(File file) throws IOException {
-    return FileUtils.readFileToString(file, "UTF-8");
+    private String compile() throws IOException {
+      PegDownProcessor processor = new PegDownProcessor();
+      String compiled = processor.markdownToHtml(readFile());
+      return compiled;
+    }
+
+    private String readFile() throws IOException {
+      return FileUtils.readFileToString(file, "UTF-8");
+    }
   }
 }
